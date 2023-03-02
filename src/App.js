@@ -32,26 +32,31 @@ function App() {
         console.log(err);
       })
   }, [data])
-  // const onSubmit = () => {
-  //   axios.put(`https://api.srmmilan.org/api/v1/ticket/update/${data}`, {
-  //     ticketType: ticketData.data.ticketType,
-  //     checkedInBy: "Helpdesk",
-  //     barcode: "abcd"
-  //   }, {
-  //     headers: {
-  //       'Content-Type': 'application/json',
-  //       'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoicmlzaGl0c2hpdmVzaEBnbWFpbC5jb20iLCJpYXQiOjE2Nzc3NDc2MDMsImV4cCI6MTY3ODE3OTYwM30.a9aR6yA_d28ZVcjrkMFvlKoUBhwQ9YnUKUss2ozksOY"
-  //     }
-  //   })
-  //     .then(res => {
-  //       console.log(res);
-  //       window.alert("Ticket Checked In Successfully")
-  //     })
-  //     .catch(err => {
-  //       window.alert("Ticket Check In Failed" + err)
-  //     })
-  // }
+  const onSubmit = async () => {
+
+    await axios.put(`https://api.srmmilan.org/api/v1/ticket/issue/${data}`, {}, {
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoicmlzaGl0c2hpdmVzaEBnbWFpbC5jb20iLCJpYXQiOjE2Nzc3NDc2MDMsImV4cCI6MTY3ODE3OTYwM30.a9aR6yA_d28ZVcjrkMFvlKoUBhwQ9YnUKUss2ozksOY"
+      }
+    })
+      .then(res => {
+        // console.log(res);
+        window.alert(res.data.message)
+      })
+      .catch(err => {
+        console.log(err)
+        if (err.response.status == 400) {
+          window.alert(err.response.data.message);
+        }
+        else {
+          window.alert('Error Occured')
+        }
+      }
+      )
+  }
   const [chkData, setChkData] = useState("");
+  console.log(ticketData)
   return (
     <div className="container mx-auto">
       {/* <div className="p-8">
@@ -131,14 +136,14 @@ function App() {
           <p>Purchased At: {ticketData.data.purchasedAt}</p>
           {
             ticketData.data.emailID ?
-              <p>Issued to: {ticketData.data.emailID}</p>
+              <p>Issued to: {ticketData.data.emailID ? ticketData.data.emailID : ticketData.data.emailId}</p>
               :
               <p>Issued to: {ticketData.data.uId}</p>
           }
           {/* <p>Issued to: {ticketData.data.emailID}</p> */}
           <p>Ticket Type: {ticketData.data.ticketType}</p>
-
-          {/* <button onClick={onSubmit}>Issue Ticket</button> */}
+          <p>Ticket Status: {ticketData.data.ticketIssued ? "Yes" : "No"}</p>
+          <button onClick={onSubmit}>Issue Ticket</button>
         </div>
         : <p>Data cannot be verified or no data found</p>}
     </div >
