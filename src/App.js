@@ -26,7 +26,26 @@ function App() {
         console.log(err);
       })
   }, [data])
-
+  // const onSubmit = () => {
+  //   axios.put(`https://api.srmmilan.org/api/v1/ticket/update/${data}`, {
+  //     ticketType: ticketData.data.ticketType,
+  //     checkedInBy: "Helpdesk",
+  //     barcode: "abcd"
+  //   }, {
+  //     headers: {
+  //       'Content-Type': 'application/json',
+  //       'Authorization': "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbElkIjoicmlzaGl0c2hpdmVzaEBnbWFpbC5jb20iLCJpYXQiOjE2Nzc3NDc2MDMsImV4cCI6MTY3ODE3OTYwM30.a9aR6yA_d28ZVcjrkMFvlKoUBhwQ9YnUKUss2ozksOY"
+  //     }
+  //   })
+  //     .then(res => {
+  //       console.log(res);
+  //       window.alert("Ticket Checked In Successfully")
+  //     })
+  //     .catch(err => {
+  //       window.alert("Ticket Check In Failed" + err)
+  //     })
+  // }
+  const [chkData, setChkData] = useState("");
   return (
     <div className="container mx-auto">
       {/* <div className="p-8">
@@ -80,7 +99,12 @@ function App() {
       }
 
       <div onClick={() => { setData(null); setTicketData(null); setReadData(true) }}><CameraAlt /></div>
+      <p>Check in Manually</p>
 
+      <div>
+        <input type="email" placeholder="Enter Email Id" onChange={(e) => { setChkData(e.target.value) }} />
+        <button onClick={() => setData(chkData)} >Check Data</button>
+      </div>
       {ticketData?.data?.pId ?
         <div>
           <p style={{
@@ -92,6 +116,7 @@ function App() {
           <p>Issued to: {ticketData.data.emailId}</p>
           <p>Ticket Type: {ticketData.data.ticketType}</p>
 
+          {/* <button onClick={onSubmit}>Issue Ticket</button> */}
         </div>
         : <p>Data cannot be verified or no data found</p>}
     </div >
