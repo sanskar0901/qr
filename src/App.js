@@ -19,8 +19,14 @@ function App() {
       }
     })
       .then(res => {
-        console.log(res);
+        console.log(res.data);
+        // if (res.data.data) {
+        //   setTicketData(res.data.data);
+        // }
+        // else {
+
         setTicketData(res.data);
+        // }
       })
       .catch(err => {
         console.log(err);
@@ -82,6 +88,9 @@ function App() {
       {
         readData ?
           <QrReader
+            constraints={
+              { facingMode: 'environment' }
+            }
             onResult={(result, error) => {
               if (!!result) {
                 setData(result?.text);
@@ -105,15 +114,28 @@ function App() {
         <input type="email" placeholder="Enter Email Id" onChange={(e) => { setChkData(e.target.value) }} />
         <button onClick={() => setData(chkData)} >Check Data</button>
       </div>
-      {ticketData?.data?.pId ?
+      {/* {JSON.stringify(ticketData)} */}
+      {ticketData?.data ?
         <div>
           <p style={{
             color: 'green'
           }}>Status Code: {ticketData.statusCode}</p>
           <p>Message: {ticketData.message}</p>
-          <p>Transaction Id: {ticketData.data.pId}</p>
+          {ticketData.data.pId ?
+
+            <p>Transaction Id: {ticketData.data.pId}</p>
+            :
+            <p>Transaction Id: {ticketData.data.pID}</p>
+          }
+          {/* <p>Transaction Id: {ticketData.data.pId ? ticketData.data.pId : ticketData.data.pID}</p> */}
           <p>Purchased At: {ticketData.data.purchasedAt}</p>
-          <p>Issued to: {ticketData.data.emailId}</p>
+          {
+            ticketData.data.emailID ?
+              <p>Issued to: {ticketData.data.emailID}</p>
+              :
+              <p>Issued to: {ticketData.data.uId}</p>
+          }
+          {/* <p>Issued to: {ticketData.data.emailID}</p> */}
           <p>Ticket Type: {ticketData.data.ticketType}</p>
 
           {/* <button onClick={onSubmit}>Issue Ticket</button> */}
